@@ -5,22 +5,27 @@
         <meta charset='utf-8'>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
         <title> {%block title %} {%endblock%} | CEREST </title>
     </head>
     <body class="font-['Roboto'] font-light flex flex-col min-h-screen">
-        <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200">
+        <nav class="py-10 px-6 flex justify-between items-center">
             <a href ="/" class="text-xl font-semibold">CEREST</a>
 
             <div class="space-x-6">
-            <a href="#" class="text-xl text-zinc-600 hover:text-gray-500"> Acompanhar Denúncia </a>
+                <a href="#" class="text-xl text-zinc-600 hover:text-gray-500"> Acompanhar Denúncia </a>
+                <a href="#" class="text-xl text-zinc-600 hover:text-gray-500"> Nova Denúncia </a>
             </div>
 
         </nav>
     
         <div class="px-6 py-6">
+            <div class="mx-auto my-20 mb-5 ml-[15.625%] mr-[15.625%] border border-slate-400 p-10 shadow-md">
+                <h1 class="text-5xl text-center">{% block header_text%}{{header_text}}{% endblock %}</h1>
+            </div>
             {% block content %}
             {% endblock %}
         </div>

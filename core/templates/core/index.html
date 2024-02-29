@@ -1,6 +1,67 @@
 {% extends 'core/base.html' %}
-{% block title %} Denuncia {%endblock%}
+
+{% block title %}{{title}}{%endblock%}
 
 {% block content %}
-    <h1> The front page </h1>
+
+
+<div class="mx-auto ml-[15.625%] mr-[15.625%] border border-slate-300 p-10">
+<form method="POST" action="." enctype="multipart/form-data">
+    {% csrf_token %}
+
+     <div class="space-y-4 text-2xl font-normal">
+        {{ form.as_p }}
+        <script>
+            
+            $(document).ready(function(){
+              
+
+                // Ocultar o campo de e-mail quando o checkbox de 'anonimo' estiver marcado
+                $('#id_anonimo').change(function(){
+                    if ($(this).is(':checked')) {
+                        $('#id_email').closest('p').show();  // Esconde o parágrafo que envolve o campo de e-mail
+                    } else {
+                        $('#id_email').closest('p').hide();  // Mostra o parágrafo que envolve o campo de e-mail
+                    }
+                });
+                // Executar o código ao carregar a página se o checkbox 'anonimo' já estiver marcado
+                if ($('#id_anonimo').is(':checked')) {
+                    $('#id_email').closest('p').hide();
+                }
+                
+                $('#check_sim').click(function() {
+                    // Alterar o estado do checkbox para marcado
+                    $('#id_anonimo').prop('checked', true);
+                    // Esconder o campo de e-mail
+                    $('#id_email').closest('p').hide();
+                    $(this).addClass('bg-[#77EB83]').removeClass('border');
+                    $('#check_nao').removeClass('bg-[#DA1F1F]').addClass('border')
+                });
+        
+                // Adicionar evento de clique para o span #check_nao
+                $('#check_nao').click(function() {
+                    // Alterar o estado do checkbox para desmarcado
+                    $('#id_anonimo').prop('checked', false);
+                    // Mostrar o campo de e-mail
+                    $('#id_email').closest('p').show();
+                    $(this).addClass('bg-[#DA1F1F]').removeClass('border');
+                    $('#check_sim').removeClass('bg-[#77EB83]').addClass('border')
+                });
+            });
+        </script>
+    </div>
+
+    {% if form.errors or form.non_field_errors %}
+    <div class="mb-3 p-6 bg-red-100 rounded-xl">
+        {% for field in form %}
+            {{ field.errors }}
+        {% endfor %}
+
+        {{ form.non_field_errors }} 
+    </div>    
+    {% endif %}
+    
+    <button class="ml-auto mt-6 py-4 px-12 text-lg bg-[#77EB83] text-[#555353] flex justify-end"> Submit </button>
+</form>
+</div>
 {%endblock%}
