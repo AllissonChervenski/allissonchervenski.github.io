@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Denuncia
 from .forms import NewDenunciaForm
 
 def contact (request):
@@ -10,14 +10,21 @@ def index(request):
         form = NewDenunciaForm(request.POST, request.FILES)
 
         if form.is_valid():
-            form.save()
+            denuncia = form.save()
 
-            return redirect('core:index')
+    
+            return redirect('core:protocol',protocolo=denuncia.protocolo )
     else:     
-        form = NewDenunciaForm
+        form = NewDenunciaForm()
 
     return render(request, 'core/index.html',{
         'form': form,
         'title': 'Nova Denuncia',
-        'header_text': 'Formulário de denúncia de negligência a saúde do trabalhador',
+    })
+
+def protocol(request, protocolo):
+    denuncia = Denuncia.objects.filter(protocolo=protocolo).first() 
+
+    return render(request, 'core/protocolo.html', {
+        'denuncia': denuncia,
     })

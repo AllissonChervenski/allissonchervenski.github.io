@@ -2,12 +2,12 @@ from django import forms
 from django.utils.safestring import mark_safe
 from .models import Denuncia
 
-INPUT_CLASSES = 'w-full py-4 px-6 border'
+INPUT_CLASSES = 'w-full py-4 px-6 border placeholder:font-[Roboto]'
 class CustomCheckboxInput(forms.widgets.CheckboxInput):
     def render(self, name, value, attrs=None, renderer=None):
         # Adapte este HTML conforme necessário para atender aos seus requisitos
         checkbox_html = super().render(name, value, attrs, renderer)
-        return mark_safe(f'<label class=" ml-10 mr-auto mb-4 mt-3 text-lg table cursor-pointer text-black rounded-sm">{checkbox_html} <span class="py-2 px-6  border-r-0 border-slate-300 rounded-sm bg-[#77EB83]" id="check_sim"> Sim </span><span class="py-2 px-6 border border-l-0 border-slate-300 rounded-sm"  id="check_nao"> Não</span></label>')
+        return mark_safe(f'<label class=" ml-10 mr-auto mb-4 mt-3 text-lg table cursor-pointer text-black rounded-sm">{checkbox_html} <span class="py-2 px-6  border-r-0 border-slate-300 rounded-sm bg-[#77EB83]" id="check_sim">Sim</span><span class="py-2 px-6 border border-l-0 border-slate-300 rounded-sm"  id="check_nao">Não</span></label>')
 
     
 class NewDenunciaForm(forms.ModelForm):
@@ -69,7 +69,7 @@ class NewDenunciaForm(forms.ModelForm):
             'tipo_denuncia': 'Tipo de denúncia*',
             'descricao': 'Descrição da denúncia*',
             'testemunhas': 'Testemunhas da ocorrência',
-            'anonimo':"Denúncia anônima",
+            'anonimo':"Denúncia anônima (caso marque \"não\", será requisitado o e-mail para envio de atualizações)",
             'acoes': 'Ações tomadas',
             'email': 'E-mail',
             'evidencias': "Evidências coletadas",

@@ -1,5 +1,24 @@
 from django.db import models
+import datetime
+import random
 
+def gerador_protocolo():
+    ano_atual = datetime.datetime.now().year
+
+    #Tentativa máximas
+    max_tentativas = 20
+    tentativas = 0
+
+
+    while tentativas < max_tentativas:
+        rand_num = random.randint(100000, 999999)
+        protocolo_novo = f'{ano_atual}{rand_num}'
+
+        if not Denuncia.objects.filter(protocolo=protocolo_novo).exists():
+            return protocolo_novo
+        tentativas += 1
+    
+    raise Exception("Erro. Tente novamente mais tarde.")
 class Denuncia(models.Model):
     DENUNCIAS_CHOICES = [
     ("ASSEDIO", "ASSÉDIO (MORAL, SEXUAL, ETC.)"),
@@ -10,6 +29,8 @@ class Denuncia(models.Model):
 ]
    
     nome_empresa = models.CharField(max_length=255)
+    #cidade = models.CharField(max_length=255)
+    #estado = models.CharField(max_length=255)
     endereco_empresa = models.CharField(max_length=255)
     tipo_denuncia = models.CharField( 
         max_length = 13,
@@ -29,3 +50,5 @@ class Denuncia(models.Model):
     data_ocorrido = models.DateField(blank=True, null=True)
     evidencias = models.ImageField(upload_to='denuncia_images', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    protocolo = models.CharField(max_length=10, unique=True, default=gerador_protocolo)
+    situacao = models.BooleanField(default=True)

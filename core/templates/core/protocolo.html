@@ -1,0 +1,54 @@
+{% extends 'core/base.html' %}
+{% block title %}
+  Protocolo
+{% endblock %}
+{% block header_text %}
+  Dados da denúncia. <br />
+  <p class="text-sm">Salve o número de protocolo para acompanhar a denúncia</p>
+{% endblock %}
+{% block content %}
+  {% if denuncia %}
+    <div class="mx-auto ml-[15.625%] mr-[15.625%] border border-slate-300 px-10">
+      <div class="space-y-4 text-2xl font-normal ">
+        <div class="inline-flex my-2 justify-between w-full text-slate-500 text-3xl">
+          <h1>Número de Protocolo:</h1><h1>#{{ denuncia.protocolo }}</h1>
+        </div>
+        <div class="font-light" style="margin:100px 0px">
+          <div class="justify-between inline-flex w-full px-16 mb-16">
+            <h2>Situação</h2>
+            <h2>
+              {% if denuncia.situacao %}
+                {% with situacao='Aberto' %}
+                  {{ situacao }}
+                {% endwith %}
+              {% else %}
+                {% with situacao='Fechado' %}
+                  {{ situacao }}
+                {% endwith %}
+              {% endif %}
+            </h2>
+          </div>
+          <div class="justify-between inline-flex w-full px-16 mb-16">
+            <h2>Data de emissão:</h2>
+            <h2>{{denuncia.created_at}}
+        </div>
+          <div class="justify-between inline-flex w-full px-16 mb-16">
+            <h2>Nome da Empresa:</h2>
+            <h2>{{denuncia.nome_empresa}}
+        </div>
+        <div class="justify-between inline-flex w-full px-16 mb-16">
+            <h2>Tipo de denúncia:</h2>
+            <h2>{{denuncia.tipo_denuncia}}</h2>
+        </div>
+        <div class="w-full px-16 mb-16">
+            <h2>Descrição:</h2>
+            <p class="border text-sm">{{denuncia.descricao}}</p>
+        </div>
+        
+      </div>
+    </div>
+</div>
+  {% else %}
+    <p>Nenhuma denúncia encontrada com o protocolo fornecido.</p>
+  {% endif %}
+{% endblock %}

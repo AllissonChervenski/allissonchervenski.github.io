@@ -1,6 +1,7 @@
 {% extends 'core/base.html' %}
 
 {% block title %}{{title}}{%endblock%}
+{%block header_text%} Formulário de denúncia de negligência a saúde do trabalhador{%endblock%}
 
 {% block content %}
 
@@ -28,7 +29,7 @@
                 if ($('#id_anonimo').is(':checked')) {
                     $('#id_email').closest('p').hide();
                 }
-                
+
                 $('#check_sim').click(function() {
                     // Alterar o estado do checkbox para marcado
                     $('#id_anonimo').prop('checked', true);
@@ -61,7 +62,7 @@
     </div>    
     {% endif %}
     
-    <button class="ml-auto mt-6 py-4 px-12 text-lg bg-[#77EB83] text-[#555353] flex justify-end"> Submit </button>
+    <button class="ml-auto mt-6 py-4 px-12 text-lg bg-[#77EB83] text-slate-700 flex justify-end"> Enviar </button>
 </form>
 </div>
 {%endblock%}
