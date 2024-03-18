@@ -25,11 +25,12 @@
   </head>
   <body class="font-['Roboto_Condensed'] font-light flex flex-col min-h-screen">
     <nav class=" font-[Merriweather]  py-10 px-6 flex justify-between items-center">
-      <a href="/" class="text-xl font-semibold">CEREST</a>
+      {% load static %}
+      <a href="/"><img src="{% static 'core/cerest.png' %}" alt="logo_cerest" class="w-36 h-24"></img></a>
 
       <div class="space-x-6">
-        <a href="#" class="text-xl text-zinc-600 hover:text-gray-500">Acompanhar Denúncia</a>
-        <a href="#" class="text-xl text-zinc-600 hover:text-gray-500">Nova Denúncia</a>
+        <a href="{% url 'core:pesquisar' %}" class="text-xl text-zinc-600 hover:text-gray-500">Acompanhar Denúncia</a>
+        <a href="/" class="text-xl text-zinc-600 hover:text-gray-500">Nova Denúncia</a>
       </div>
     </nav>
 

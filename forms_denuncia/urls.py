@@ -8,6 +8,6 @@ from core.views import index, contact
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
-    path('contato/', contact, name='contato')
+    path('contato/', contact, name='contato'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -4,6 +4,7 @@ from .forms import NewDenunciaForm
 from dal import autocomplete
 from django.utils.html import format_html
 
+
 class CidadesAutocomplete(autocomplete.Select2QuerySetView):
         
         def get_queryset(self):
@@ -58,4 +59,15 @@ def protocol(request, protocolo):
 
     return render(request, 'core/protocolo.html', {
         'denuncia': denuncia,
+    })
+
+def pesquisar(request):
+    query = request.GET.get('query', '')
+
+
+    if query:
+        return redirect('core:protocol', protocolo=query)
+
+    return render(request, 'core/pesquisar.html', {
+        'query': query,
     })

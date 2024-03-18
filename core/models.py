@@ -70,7 +70,9 @@ class Denuncia(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     protocolo = models.CharField(max_length=10, unique=True, default=gerador_protocolo)
     situacao = models.BooleanField(default=True)
-
+    
+    def __str__(self):
+        return self.nome_empresa
     
 
 
