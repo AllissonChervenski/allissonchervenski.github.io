@@ -37,12 +37,17 @@
             <h2>{{denuncia.nome_empresa}}
         </div>
         <div class="justify-between inline-flex w-full px-16 mb-16">
+          <h2>Cidade da Empresa:</h2>
+          <h2>{{denuncia.cidade}}, {{denuncia.cidade.estado}}</h2>
+          
+      </div>
+        <div class="justify-between inline-flex w-full px-16 mb-16">
             <h2>Tipo de denúncia:</h2>
             <h2>{{denuncia.tipo_denuncia}}</h2>
         </div>
         <div class="w-full px-16 mb-16">
             <h2>Descrição:</h2>
-            <p class="border text-sm">{{denuncia.descricao}}</p>
+            <p class="border text-lg">{{denuncia.descricao}}</p>
         </div>
         
       </div>

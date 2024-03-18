@@ -2,6 +2,7 @@ from django.db import models
 import datetime
 import random
 
+
 def gerador_protocolo():
     ano_atual = datetime.datetime.now().year
 
@@ -19,6 +20,22 @@ def gerador_protocolo():
         tentativas += 1
     
     raise Exception("Erro. Tente novamente mais tarde.")
+
+class Estado(models.Model):
+    uf = models.CharField(max_length = 2, unique=True)
+
+    def __str__(self):
+        return self.uf
+
+class Cidades(models.Model):
+    nome = models.CharField(max_length = 50)
+    estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
+
+   
+    def __str__(self):
+        return self.nome
+
+    
 class Denuncia(models.Model):
     DENUNCIAS_CHOICES = [
     ("ASSEDIO", "ASSÉDIO (MORAL, SEXUAL, ETC.)"),
@@ -32,6 +49,7 @@ class Denuncia(models.Model):
     #cidade = models.CharField(max_length=255)
     #estado = models.CharField(max_length=255)
     endereco_empresa = models.CharField(max_length=255)
+    cidade = models.ForeignKey(Cidades, related_name='Denuncia', blank=False, null= False, on_delete = models.CASCADE)
     tipo_denuncia = models.CharField( 
         max_length = 13,
         choices = DENUNCIAS_CHOICES
@@ -52,3 +70,10 @@ class Denuncia(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     protocolo = models.CharField(max_length=10, unique=True, default=gerador_protocolo)
     situacao = models.BooleanField(default=True)
+
+    
+
+
+
+
+

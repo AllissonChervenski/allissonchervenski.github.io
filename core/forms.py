@@ -1,6 +1,7 @@
 from django import forms
+from dal import autocomplete
 from django.utils.safestring import mark_safe
-from .models import Denuncia
+from .models import Denuncia, Cidades
 
 INPUT_CLASSES = 'w-full py-4 px-6 border placeholder:font-[Roboto]'
 class CustomCheckboxInput(forms.widgets.CheckboxInput):
@@ -8,13 +9,14 @@ class CustomCheckboxInput(forms.widgets.CheckboxInput):
         # Adapte este HTML conforme necessário para atender aos seus requisitos
         checkbox_html = super().render(name, value, attrs, renderer)
         return mark_safe(f'<label class=" ml-10 mr-auto mb-4 mt-3 text-lg table cursor-pointer text-black rounded-sm">{checkbox_html} <span class="py-2 px-6  border-r-0 border-slate-300 rounded-sm bg-[#77EB83]" id="check_sim">Sim</span><span class="py-2 px-6 border border-l-0 border-slate-300 rounded-sm"  id="check_nao">Não</span></label>')
-
     
 class NewDenunciaForm(forms.ModelForm):
+
     class Meta:
         model = Denuncia
-        fields = ('nome_empresa', 'endereco_empresa', 'tipo_denuncia', 'descricao', 'testemunhas', 'acoes', 'data_ocorrido', 'anonimo', 'email', 'evidencias')
-
+        fields = ('nome_empresa', 'endereco_empresa', 'cidade', 'tipo_denuncia', 'descricao', 'testemunhas', 'acoes', 'data_ocorrido', 'anonimo', 'email', 'evidencias')
+        
+        
         widgets = { 
             'nome_empresa': forms.TextInput(attrs={
                 'class': INPUT_CLASSES,
@@ -25,6 +27,16 @@ class NewDenunciaForm(forms.ModelForm):
                 'class': INPUT_CLASSES,
                 'placeholder': "Endereço da empresa denunciada",
             }),
+
+            'cidade': autocomplete.ModelSelect2(url="core:cidades-autocomplete", 
+                                                attrs={
+                                                    'class': "w-full md:border placeholder:font-[Roboto] text-lg",
+                                                    'data-html': True,
+                                                    'data-minimum-input-length': 1,
+
+                                                }),
+
+
             'tipo_denuncia': forms.Select(attrs={
                 'class': INPUT_CLASSES,
                 'placeholder': "Selecione o tipo de denúncia",
@@ -66,6 +78,7 @@ class NewDenunciaForm(forms.ModelForm):
         labels = {
             'nome_empresa': 'Nome da Empresa*',
             'endereco_empresa': 'Endereço da Empresa*',
+            'cidade': 'Cidade*',
             'tipo_denuncia': 'Tipo de denúncia*',
             'descricao': 'Descrição da denúncia*',
             'testemunhas': 'Testemunhas da ocorrência',
@@ -75,3 +88,4 @@ class NewDenunciaForm(forms.ModelForm):
             'evidencias': "Evidências coletadas",
             'data_ocorrido': "Data do ocorrido"
         }
+    
