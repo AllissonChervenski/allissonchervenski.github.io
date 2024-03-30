@@ -9,5 +9,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('contato/', contact, name='contato'),
+    path('dashboard/', include('dashboard.urls')),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

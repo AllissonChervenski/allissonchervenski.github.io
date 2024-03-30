@@ -57,7 +57,8 @@ class NewDenunciaForm(forms.ModelForm):
             }),
             'data_ocorrido': forms.DateTimeInput(format='%d/%m/%Y', attrs={
                 'class': INPUT_CLASSES,
-                'type': 'date'
+                'type': 'date',
+                'placeholder': '00/00/0000'
             }),
             
             'anonimo': CustomCheckboxInput(attrs={

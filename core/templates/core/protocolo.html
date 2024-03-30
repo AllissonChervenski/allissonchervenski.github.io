@@ -8,6 +8,8 @@
 {% endblock %}
 {% block content %}
   {% if denuncia %}
+  <form method="POST" action="." enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="mx-auto ml-[15.625%] mr-[15.625%] border border-slate-300 px-10">
       <div class="space-y-4 text-2xl font-normal ">
         <div class="inline-flex my-2 justify-between w-full text-slate-500 text-3xl">
@@ -49,10 +51,13 @@
             <h2>Descrição:</h2>
             <p class="border text-lg">{{denuncia.descricao}}</p>
         </div>
-        
+        {% if usuario_autenticado %}
+        <button class="ml-auto mt-6 py-4 px-12 text-lg bg-[#77EB83] text-slate-700 flex justify-end" type="submit" name="_method" value='PUT'> Fechar </button>
+        {% endif %}
       </div>
     </div>
 </div>
+</form>
   {% else %}
     <p>Nenhuma denúncia encontrada com o protocolo fornecido.</p>
   {% endif %}

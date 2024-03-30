@@ -1,9 +1,7 @@
 import djhacker
 from django import forms
 from django.urls import path
-from dal import autocomplete
 from . import views
-from .models import Denuncia, Cidades
 
 app_name = 'core'
 

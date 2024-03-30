@@ -55,10 +55,11 @@ def index(request):
     })
 
 def protocol(request, protocolo):
-    denuncia = Denuncia.objects.filter(protocolo=protocolo).first() 
-
+    denuncia = Denuncia.objects.filter(protocolo=protocolo).first()  
+    usuario_autenticado = request.user.is_authenticated
     return render(request, 'core/protocolo.html', {
         'denuncia': denuncia,
+        'usuario_autenticado': usuario_autenticado,
     })
 
 def pesquisar(request):

@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% block header_text %}
+  Dashboard do admin
+{% endblock %}
+{% block content %}
+  <div class="mx-auto ml-[10%] mr-[10%] p-2 overflow-x-auto">
+    <div class="text-2xl font-normal font-[Roboto]">
+      <div class="my-0 justify-between text-3xl text-center">
+        {% block lista %}
+          <div class="text-center w-full ">
+            {% for item in lista %}
+              <div class="border {% if item.anonimo %} border-[#77EB83] {% else %} border-[#DA1F1F] {% endif %}rounded-md text-xs text-slate-600 my-1">
+              <div class="flex font-light text-[10px] w-11/12">  
+                <span class=" mx-10 w-full">Empresa</span>
+                <span class=" mx-10 w-full">Protocolo</span>
+                <span class=" mx-10 w-full">Data</span>
+                <span class=" mx-10 w-full">Status</span>
+              </div>
+            <div class="flex font-light text-lg justif ">
+                <span class="mx-10 w-full">{{ item.protocolo }}</span>
+                <span class="mx-10 w-full">{{ item.nome_empresa }}</span>
+                <span class="mx-10 w-full">{{ item.data_ocorrido|date:'d/m/Y' }}</span>
+                {% if item.situacao %}
+                  <span class="mx-10 w-full">Aberto</span>
+                {% else %}
+                  <span class="mx-10 w-full">Fechado</span>
+                {% endif %}
+                <span class="mr-10 ml-3 my-0 font-black text-4xl"> +</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
