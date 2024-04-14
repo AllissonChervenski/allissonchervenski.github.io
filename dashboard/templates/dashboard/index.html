@@ -1,6 +1,6 @@
 {% extends 'core/base.html' %}
 {% block header_text %}
-  Dashboard do admin
+  Gerenciamento de Denúncias
 {% endblock %}
 {% block content %}
   <div class="mx-auto ml-[10%] mr-[10%] p-2 overflow-x-auto">
@@ -9,24 +9,48 @@
         {% block lista %}
           <div class="text-center w-full ">
             {% for item in lista %}
-              <div class="border {% if item.anonimo %} border-[#77EB83] {% else %} border-[#DA1F1F] {% endif %}rounded-md text-xs text-slate-600 my-1">
-              <div class="flex font-light text-[10px] w-11/12">  
-                <span class=" mx-10 w-full">Empresa</span>
-                <span class=" mx-10 w-full">Protocolo</span>
-                <span class=" mx-10 w-full">Data</span>
-                <span class=" mx-10 w-full">Status</span>
-              </div>
-            <div class="flex font-light text-lg justif ">
-                <span class="mx-10 w-full">{{ item.protocolo }}</span>
-                <span class="mx-10 w-full">{{ item.nome_empresa }}</span>
-                <span class="mx-10 w-full">{{ item.data_ocorrido|date:'d/m/Y' }}</span>
-                {% if item.situacao %}
-                  <span class="mx-10 w-full">Aberto</span>
-                {% else %}
-                  <span class="mx-10 w-full">Fechado</span>
-                {% endif %}
-                <span class="mr-10 ml-3 my-0 font-black text-4xl"> +</span>
-              </div>
+            <div id="denuncia-{{forloop.counter}}" class="{% if item.anonimo %} bg-[#77EB83] {% else %} bg-[#7798EB] {% endif %} {% if item.situacao == False %} bg-[#DA1F1F] {% endif %} rounded-md">
+              <div class="border {% if item.anonimo %} border-[#77EB83] {% else %} border-[#7798EB] {% endif %} {% if item.situacao == False %} border-[#DA1F1F] {% endif %} rounded-md rounded-br-3xl text-xs text-slate-600 my-1 relative bg-white">
+                <a href="{% url 'core:protocol' item.protocolo %}">  
+                  <div class="flex font-light text-[10px] w-11/12">  
+                    <span class="mx-10 w-full">Protocolo</span>
+                    <span class="mx-10 w-full">Empresa</span>
+                      <span class="mx-10 w-full">Data</span>
+                      <span class="mx-10 w-full">Status</span>
+                  </div>
+                  <div class="flex font-light lg:text-lg sm:text-sm md:text-md xs:text-xs w-11/12">
+                      <span class="mx-10 w-full">{{ item.protocolo }}</span>
+                      <span class="mx-10 w-full">{{ item.nome_empresa|truncatechars:16 }}</span>
+                      <span class="mx-10 w-full">{{ item.data_ocorrido|date:'d/m/Y' }}</span>
+                      {% if item.situacao %}
+                          <span class="mx-10 w-full">Aberto</span>
+                      {% else %}
+                          <span class="mx-10 w-full">Fechado</span>
+                      {% endif %}
+                  </div>
+                </a>
+                  <span id="icon-denuncia-{{forloop.counter}}"class="absolute top-0 right-0 mt-1 mr-10 font-bold {% if item.anonimo %} text-[#77EB83] {% else %} text-[#7798EB] {% endif %} {% if item.situacao == False %} text-[#DA1F1F] {% endif %} text-4xl cursor-pointer">+</span>
+                  <div id="gaveta-denuncia-{{forloop.counter}}" style="display: none;" class="font-['Roboto_Condensed'] text-lg text-left border border-t-0 m-3 mt-5">
+                    <div class="flex items-center border-0">
+                      <div class="mr-2 border-t flex-grow -mt-[13.5px]"></div>
+                      <div class="-mt-[13.5px] px-4">DESCRIÇÃO</div>
+                      <div class="ml-2 border-t flex-grow -mt-[13.5px]"></div>
+                  </div>
+                  <div class="mt-2 py-2 px-4 uppercase text-[#888888] text-sm">
+                      {{ item.descricao }}
+                  </div>
+                  
+                  </div>
+                    {% if item.anonimo %}
+                    <div id="anonimo-denuncia-{{forloop.counter}}"class="w-full h-6 flex justify-between bg-[#77EB83] justify-center items-center font-['Roboto_Condensed'] text-black " style="display: none;">
+                      <span class="ml-auto mr-5 border border-black px-1 rounded-sm" >Anônimo<span> 
+                    </div>
+                    {% else %}
+                    <div id="anonimo-denuncia-{{forloop.counter}}"class="w-full h-6 flex justify-between {% if item.situacao %} bg-[#7798EB] {% else %} bg-[#DA1F1F] {% endif %} justify-center items-center font-['Roboto_Condensed'] text-black" style="display: none;">
+                      <span class="ml-auto mr-5 border border-black px-1 rounded-sm" >Não Anônimo<span> 
+                    </div>
+                      {% endif %}        
+                </div>
             </div>
             {% endfor %}
           </div>
@@ -34,4 +58,44 @@
       </div>
     </div>
   </div>
+
+  <script>
+    $(document).ready(function(){
+      $('[id*="icon"]').click(function(){
+        var id = $(this).closest('[id^="denuncia"]').attr('id');
+        var gavetaId= "#gaveta-" + id
+        var icon = "#icon-" + id
+        var todasClasses = $(icon).attr('class');
+        // Ou
+        // var todasClasses = $(this).prop('class');
+
+        // Dividir as classes em um array
+        var arrayClasses = todasClasses.split(' ');
+
+        // Encontrar a classe 'text' no array de classes
+        var classeText = arrayClasses.filter(function(classe) {
+            return classe.startsWith('text-[#');
+        });
+       
+        if (classeText.length > 0) {
+          var ultimaClasseText = classeText.pop(); // Pegando a última ocorrência
+          console.log(ultimaClasseText);
+        if($(icon).text() === "+"){
+          $(icon).text('-').addClass('font-[300] border-4 border-'+ultimaClasseText.slice(5) + " w-7 h-7 rounded-full flex justify-center items-center text-6xl  mt-3 pb-0.5");
+        }
+        else{
+          $(icon).text('+').removeClass('font-[300] border-4 border-'+ultimaClasseText.slice(5) + " w-7 h-7 rounded-full flex justify-center items-center text-6xl  mt-3 pb-0.5");
+        }
+        $(gavetaId).toggle();
+        $("#anonimo-" + id).toggle();
+      }
+      })
+
+     
+    }
+    )
+  
+  </script>
 {% endblock %}
+
+

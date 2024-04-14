@@ -21,12 +21,12 @@
       {% block title %}
 
       {% endblock %}| CEREST
-    </title>
+    </title> 
   </head>
   <body class="font-['Roboto_Condensed'] font-light flex flex-col min-h-screen">
     <nav class=" font-[Merriweather]  py-10 px-6 flex justify-between items-center">
       {% load static %}
-      <a href="/"><img src="{% static 'core/cerest.png' %}" alt="logo_cerest" class="w-36 h-24"></img></a>
+      <a href="/"><img src="{% static 'core/cerest.png' %}" alt="logo_cerest" class="w-22 h-16"></img></a>
 
       <div class="space-x-6">
         <a href="{% url 'core:pesquisar' %}" class="text-xl text-zinc-600 hover:text-gray-500">Acompanhar Denúncia</a>
@@ -35,7 +35,7 @@
     </nav>
 
     <div class="text-slate-700">
-      <div class="font-[Merriweather] mx-auto my-10 mb-5 ml-[15.625%] mr-[15.625%] border border-slate-400 px-10 py-8 shadow-md text-slate-800 font-bold uppercase">
+      <div class="font-[Merriweather] mx-auto my-10 mb-5 ml-[15.625%] mr-[15.625%] text-[#4D4D4D]">
         <h1 class="text-3xl text-center">
           {% block header_text %}
             {{ header_text }}
