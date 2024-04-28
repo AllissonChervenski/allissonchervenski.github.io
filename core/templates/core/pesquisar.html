@@ -4,7 +4,7 @@
 
 {% block content %}
 <form method="get" action="{% url 'core:pesquisar' %}" class="text-center">
-    <input name="query" class="w-1/3 py-4 px-6 border rounded-sm placeholder:font-[Roboto] text-lg " type="text" value="{{query}}" placeholder="Insira o protocolo">
+    <input name="query" class="w-1/3 py-4 px-6 border rounded-sm placeholder:font-[Roboto] text-lg " type="text" value="{{query}}" placeholder="Insira o número do protocolo">
     <button class="ml-auto mt-6 py-4 px-12 text-lg bg-[#77EB83] text-slate-700"> Pesquisar </button>
 </form>
 {%endblock%}

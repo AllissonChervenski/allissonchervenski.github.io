@@ -89,4 +89,3 @@ class NewDenunciaForm(forms.ModelForm):
             'evidencias': "Evidências coletadas",
             'data_ocorrido': "Data do ocorrido"
         }
-    
