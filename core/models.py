@@ -71,6 +71,8 @@ class Denuncia(models.Model):
     protocolo = models.CharField(max_length=10, unique=True, default=gerador_protocolo)
     situacao = models.BooleanField(default=True)
     
+    resposta = models.TextField(blank=True, null=True)
+
     def __str__(self):
         return self.nome_empresa
     

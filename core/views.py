@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Denuncia, Cidades
-from .forms import NewDenunciaForm
+from .forms import NewDenunciaForm, CloseDenunciaForm
 from dal import autocomplete
 from django.utils.html import format_html
 
@@ -44,7 +44,11 @@ def index(request):
         if form.is_valid():
             denuncia = form.save()
 
-    
+            files = form.cleaned_data["file_field"]
+            for f in files:
+                denuncia.evidencias = f
+                form.save()
+
             return redirect('core:protocol',protocolo=denuncia.protocolo )
     else:     
         form = NewDenunciaForm()
@@ -58,11 +62,27 @@ def protocol(request, protocolo):
     denuncia = Denuncia.objects.filter(protocolo=protocolo).first()  
     usuario_autenticado = request.user.is_authenticated
     base_template = 'core/base.html'
+
+    if request.method == 'POST':
+        close = CloseDenunciaForm(request.POST, instance=denuncia)
+
+        if close.is_valid():
+            if denuncia.situacao:
+                denuncia.situacao = False
+            else: 
+                denuncia.situacao = True
+                
+            close = close.save(commit=False)
+            close.save()
+    else:
+        close = CloseDenunciaForm(instance=denuncia)
+
     if(usuario_autenticado):
         base_template = 'dashboard/base.html'
     return render(request, 'core/protocolo.html', {
         'denuncia': denuncia,
         'base': base_template,
+        'closeForm': close
     })
 
 def pesquisar(request):

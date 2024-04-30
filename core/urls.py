@@ -1,4 +1,5 @@
-import djhacker
+from django.conf import settings
+from django.conf.urls.static import static
 from django import forms
 from django.urls import path
 from . import views
@@ -10,7 +11,7 @@ urlpatterns = [
     path('protocolo/<str:protocolo>/', views.protocol, name="protocol"),
     path('cidades-autocomplete/', views.CidadesAutocomplete.as_view(), name='cidades-autocomplete'),
     path('pesquisar/', views.pesquisar, name='pesquisar')
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
  
  

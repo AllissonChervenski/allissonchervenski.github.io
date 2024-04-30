@@ -9,7 +9,10 @@ class CustomCheckboxInput(forms.widgets.CheckboxInput):
         # Adapte este HTML conforme necessário para atender aos seus requisitos
         checkbox_html = super().render(name, value, attrs, renderer)
         return mark_safe(f'<label class=" ml-10 mr-auto mb-4 mt-3 text-lg table cursor-pointer text-black rounded-sm">{checkbox_html} <span class="py-2 px-6  border-r-0 border-slate-300 rounded-sm bg-[#77EB83]" id="check_sim">Sim</span><span class="py-2 px-6 border border-l-0 border-slate-300 rounded-sm"  id="check_nao">Não</span></label>')
-    
+
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
 class NewDenunciaForm(forms.ModelForm):
 
     class Meta:
@@ -67,10 +70,10 @@ class NewDenunciaForm(forms.ModelForm):
 
             'email': forms.TextInput(attrs={
                 'class': INPUT_CLASSES,
-                'placeholder': "Insira seu email para atualização da denúncia"
+                'placeholder': "Insira seu email para receber atualizações sobre a denúncia"
             }),
             
-            'evidencias': forms.FileInput(attrs={
+            'evidencias': MultipleFileInput(attrs={
                 'class': INPUT_CLASSES,
                 'placeholder': "Insira imagens de evidências da ocorrência"
             }),
@@ -88,4 +91,19 @@ class NewDenunciaForm(forms.ModelForm):
             'email': 'E-mail',
             'evidencias': "Evidências coletadas",
             'data_ocorrido': "Data do ocorrido"
+        }
+
+class CloseDenunciaForm(forms.ModelForm):
+
+    class Meta:
+        model = Denuncia
+        fields = ('resposta',)
+
+
+        widgets = {
+            "resposta": forms.Textarea(attrs={
+                'class': INPUT_CLASSES,
+                'style': 'resize:none;',
+                'placeholder': "Resposta da situação da denúncia"
+            })
         }

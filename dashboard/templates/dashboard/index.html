@@ -9,14 +9,33 @@
   <div class="mx-auto ml-[10%] mr-[10%] p-2 overflow-x-auto">
     <div class="text-2xl font-normal font-[Roboto]">
       <div class="my-0 justify-between text-3xl text-center">
-        <form method="get" action="{% url 'core:pesquisar' %}" class="text-center mb-10 -space-x-2">
+        <form method="get" action="{% url 'core:pesquisar' %}" class="text-center -space-x-2">
           <input name="query" class="w-4/5 py-1 px-6 border rounded-l-md placeholder:font-[Roboto] text-lg " type="text" value="{{query}}" placeholder="Insira o número do protocolo">
           <button class="font-['Roboto_Condensed'] py-1 px-8 text-lg bg-[#77EB83] border text-slate-700 rounded-r-md"> Buscar </button>
         </form>
-        
-        {% block lista %}
-          <div class="text-center w-full ">
-            {% for item in lista %}
+
+        <div class="text-center w-full text-sm">  
+          <div class="flex justify-center items-center space-x-6 p-6"> 
+              <!-- Legenda para 'Aberto' -->
+              <div class="flex items-center space-x-2">  <!-- Alinha verticalmente e adiciona espaço entre elementos -->
+                  <div class="w-4 h-4 bg-green-500"></div>  <!-- Quadrado verde -->
+                  <span>Aberto</span>
+              </div>
+      
+              <!-- Legenda para 'Fechado' -->
+              <div class="flex items-center space-x-2">
+                  <div class="w-4 h-4 bg-red-500"></div>  <!-- Quadrado vermelho -->
+                  <span>Fechado</span>
+              </div>
+      
+              <!-- Legenda para 'Anônimo' -->
+              <div class="flex items-center space-x-2">
+                  <div class="w-4 h-4 bg-[#7798EB]"></div>  <!-- Quadrado azul -->
+                  <span>Não anônimo</span>
+              </div>
+          </div>
+      </div>
+            {% for item in page_obj %}
             <div id="denuncia-{{forloop.counter}}" class="{% if item.anonimo %} bg-[#77EB83] {% else %} bg-[#7798EB] {% endif %} {% if item.situacao == False %} bg-[#DA1F1F] {% endif %} rounded-md">
               <div class="border {% if item.anonimo %} border-[#77EB83] {% else %} border-[#7798EB] {% endif %} {% if item.situacao == False %} border-[#DA1F1F] {% endif %} rounded-md rounded-br-3xl text-xs text-slate-600 my-1 relative bg-white">
                 <a href="{% url 'core:protocol' item.protocolo %}">  
@@ -62,7 +81,19 @@
             </div>
             {% endfor %}
           </div>
-        {% endblock %}
+
+          <div class="font-['Roboto_Condensed'] flex justify-end mt-10 text-sm">
+            <div class="flex items-center w-auto bg-[#77EB83] p-3 space-x-4 rounded-full">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="hover:font-black bg-white py-2 px-4 rounded-full">Anterior</a>
+            {% endif %}
+            <p class="bg-white rounded-full py-1 px-3">{{page_obj.number}}</p>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="hover:font-black bg-white py-2 px-4 rounded-full">Próximo</a>
+            {% endif %}
+            </div>
+        </div>
+       
       </div>
     </div>
   </div>
