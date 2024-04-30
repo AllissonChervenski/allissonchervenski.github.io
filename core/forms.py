@@ -1,7 +1,7 @@
 from django import forms
 from dal import autocomplete
 from django.utils.safestring import mark_safe
-from .models import Denuncia, Cidades
+from .models import Denuncia, Cidades, Evidencia
 
 INPUT_CLASSES = 'w-full py-4 px-6 border placeholder:font-[Roboto]'
 class CustomCheckboxInput(forms.widgets.CheckboxInput):
@@ -17,7 +17,7 @@ class NewDenunciaForm(forms.ModelForm):
 
     class Meta:
         model = Denuncia
-        fields = ('nome_empresa', 'endereco_empresa', 'cidade', 'tipo_denuncia', 'descricao', 'testemunhas', 'acoes', 'data_ocorrido', 'anonimo', 'email', 'evidencias')
+        fields = ('nome_empresa', 'endereco_empresa', 'cidade', 'tipo_denuncia', 'descricao', 'testemunhas', 'acoes', 'data_ocorrido', 'anonimo', 'email',)
         
         
         widgets = { 
@@ -73,10 +73,6 @@ class NewDenunciaForm(forms.ModelForm):
                 'placeholder': "Insira seu email para receber atualizações sobre a denúncia"
             }),
             
-            'evidencias': MultipleFileInput(attrs={
-                'class': INPUT_CLASSES,
-                'placeholder': "Insira imagens de evidências da ocorrência"
-            }),
         }    
 
         labels = {
@@ -89,7 +85,6 @@ class NewDenunciaForm(forms.ModelForm):
             'anonimo':"Denúncia anônima (caso marque \"não\", será requisitado o e-mail para envio de atualizações)",
             'acoes': 'Ações tomadas',
             'email': 'E-mail',
-            'evidencias': "Evidências coletadas",
             'data_ocorrido': "Data do ocorrido"
         }
 
@@ -106,4 +101,17 @@ class CloseDenunciaForm(forms.ModelForm):
                 'style': 'resize:none;',
                 'placeholder': "Resposta da situação da denúncia"
             })
+        }
+
+class UploadEvidencias(forms.ModelForm):
+
+    class Meta:
+        model = Evidencia
+        fields = ('imagem',)
+
+        widgets = {
+            'imagem': MultipleFileInput(attrs={
+                    'class': INPUT_CLASSES,
+                    'placeholder': "Insira imagens de evidências da ocorrência"
+                }),
         }

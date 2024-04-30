@@ -58,16 +58,20 @@
       </div>
 
       {% if request.user.is_authenticated %}
-      <div class="w-full px-16 mb-16">
-        <h2>Evidencias:</h2>
-        <div>
-            {% if denuncia.evidencias %}
-          <img src="{{ denuncia.evidencias.url }}" alt="Evidência">
-          {% else %}
-          <p> Nenhuma evidência anexada </p>
-          {% endif%}
-          </div>
-      </div>
+     
+       <div class="w-full px-16 mb-16">
+         <h2>Evidencias:</h2>
+         <div>
+            {% if evidencia.exists %}
+              {% for e in evidencia %}
+                <img src="{{ e.imagem.url }}" alt="Evidência">
+                {% endfor %}
+
+            {% else %}
+           <p> Nenhuma evidência anexada </p>
+           {% endif%}
+           </div>
+       </div>
 
         
         <form method="POST" action="." enctype="multipart/form-data">

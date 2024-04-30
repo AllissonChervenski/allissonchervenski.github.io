@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Denuncia, Cidades
-from .forms import NewDenunciaForm, CloseDenunciaForm
+from .models import Denuncia, Cidades, Evidencia
+from .forms import NewDenunciaForm, CloseDenunciaForm, UploadEvidencias
 from dal import autocomplete
 from django.utils.html import format_html
 
@@ -39,22 +39,26 @@ def contact (request):
 
 def index(request):
     if request.method == 'POST':
-        form = NewDenunciaForm(request.POST, request.FILES)
+        form = NewDenunciaForm(request.POST)
+        files = UploadEvidencias(request.POST, request.FILES)
 
         if form.is_valid():
+            denuncia = form.save(commit=False)
             denuncia = form.save()
 
-            files = form.cleaned_data["file_field"]
-            for f in files:
-                denuncia.evidencias = f
-                form.save()
+        
+            file = request.FILES.getlist('imagem')
+            for f in file:
+                evidencia = Evidencia(denuncia = denuncia, imagem=f)
+                evidencia.save()
 
             return redirect('core:protocol',protocolo=denuncia.protocolo )
     else:     
         form = NewDenunciaForm()
-
+        files = UploadEvidencias()
     return render(request, 'core/index.html',{
         'form': form,
+        'files': files,
         'title': 'Nova Denuncia',
     })
 
@@ -62,6 +66,7 @@ def protocol(request, protocolo):
     denuncia = Denuncia.objects.filter(protocolo=protocolo).first()  
     usuario_autenticado = request.user.is_authenticated
     base_template = 'core/base.html'
+    evidencia = Evidencia.objects.filter(denuncia = denuncia)
 
     if request.method == 'POST':
         close = CloseDenunciaForm(request.POST, instance=denuncia)
@@ -81,6 +86,7 @@ def protocol(request, protocolo):
         base_template = 'dashboard/base.html'
     return render(request, 'core/protocolo.html', {
         'denuncia': denuncia,
+        'evidencia': evidencia,
         'base': base_template,
         'closeForm': close
     })

@@ -66,7 +66,7 @@ class Denuncia(models.Model):
         unique=False,
      )
     data_ocorrido = models.DateField(blank=True, null=True)
-    evidencias = models.ImageField(upload_to='denuncia_images', blank=True, null=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     protocolo = models.CharField(max_length=10, unique=True, default=gerador_protocolo)
     situacao = models.BooleanField(default=True)
@@ -77,6 +77,10 @@ class Denuncia(models.Model):
         return self.nome_empresa
     
 
+class Evidencia(models.Model):
+    imagem = models.ImageField(upload_to='denuncia_images', blank=True, null=True)
+    denuncia = models.ForeignKey(Denuncia, on_delete=models.CASCADE)
+    
 
 
 
